@@ -18,12 +18,14 @@ fn generate_letter(last_target_char_option: Option<char>) -> char {
 }
 
 fn print_game(stdout: &mut Stdout, target_char: &char, target_history: &str) {
+    let message = format!("PRESS LETTER: {}", target_char);
+
     write!(
         stdout,
         "{}{}{}{}{}",
         termion::cursor::Goto(1, 1),
         termion::clear::All,
-        ("PRESS LETTER: ".to_string() + target_char.to_string().as_str()).as_str(),
+        message,
         termion::cursor::Goto(1, 3),
         target_history,
     )
