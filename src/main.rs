@@ -2,15 +2,21 @@ use rand::Rng;
 use std::io::{self, Stdout, Write};
 use termion::{event::Key, input::TermRead, raw::IntoRawMode};
 
-fn generate_letter(last_target_char_option: Option<char>) -> char {
-    let min = b'A';
-    let max = b'Z';
+const MIN_ASCII_LETTER: u8 = b'A';
+const MAX_ASCII_LETTER: u8 = b'Z';
 
-    let random_char = rand::thread_rng().gen_range(min..=max) as char;
+fn generate_letter(last_target_char_option: Option<char>) -> char {
+    let max = if last_target_char_option == None {
+        MAX_ASCII_LETTER
+    } else {
+        MAX_ASCII_LETTER - 1
+    };
+
+    let random_char = rand::thread_rng().gen_range(MIN_ASCII_LETTER..=max) as char;
 
     if let Some(last_target_char) = last_target_char_option {
-        if random_char == last_target_char {
-            return generate_letter(last_target_char_option);
+        if random_char >= last_target_char {
+            return (random_char as u8 + 1) as char;
         }
     }
 
